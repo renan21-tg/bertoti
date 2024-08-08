@@ -4,8 +4,8 @@ We see three critical differences between programming and software engineering: 
 Engenharia de Software está relacionado a uma demanda de atividade mais "dificeis" as quais devem se atentar a eficiência, escala e mais adaptações quanto a mudanças, dentro de periodos indeterminados
 <br>
 <br>
-Tempo:
+**Tempo:** Planejar desde o inicio com o desempenho e adaptação do software no futuro
 <br>
-Escala:
+**Escala:** Crescimmento conforme a demanda, eficiencia do processo é capaz de acompanhar o aumento de demandas
 <br>
-Trade-offs: 
+**Trade-offs:** São decisões e compensações que os engenheiros de software precisam fazer durante um projeto
