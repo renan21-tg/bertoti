@@ -20,6 +20,7 @@ Engenharia de Software está relacionado a uma demanda de atividade mais "difice
 <br>
 <br>
 ## Comentário: 
+
 O texto aborda uma distinção importante entre programação e engenharia de software, destacando que, enquanto a programação se foca na criação inicial de software, a engenharia de software envolve um espectro mais amplo de atividades que se estendem ao longo do tempo, como desenvolvimento, modificação e manutenção.
 
 # Aula 3
@@ -47,3 +48,18 @@ O texto aborda uma distinção importante entre programação e engenharia de so
 
 ## Análise das trade-offs na arquitetura do Uber
 ![Uber-System-Design-High-Level-Architecture](https://github.com/user-attachments/assets/72989376-50a8-4175-903f-3e5553c88646)
+
+### 1. Eficiência vs. Disponibilidade
+-  O uso de um Load Balancer (LB) garante que as requisições de motoristas (supply) e passageiros (demand) sejam distribuídas de forma eficiente entre os servidores. No entanto, o LB pode se tornar um ponto único de falha (SPOF) se não for bem implementado.
+
+### 2. Velocidade vs. Precisão
+- Componentes como Kafka, Spark, e Storm são utilizados para processamento em tempo real de dados, como roteamento, detecção de fraudes e cálculo de ETAs (tempo estimado de chegada). O trade-off aqui está entre a velocidade de processamento e a precisão dos dados processados.
+
+### 3. Consistência vs. Disponibilidade
+- A arquitetura utiliza RDBMS para armazenamento de dados estruturados e bases de dados distribuídas para diferentes regiões (Node Region 1, 2, 3, etc.). A decisão de usar múltiplas bases de dados distribuídas implica um trade-off entre consistência dos dados e disponibilidade.
+
+### 4. Latência vs. Complexidade
+- O sistema é dividido em várias regiões (Region 1, 2, 3, etc.), com células (Cell 57, Cell 2089, etc.) dentro de cada região para gerenciar a correspondência de supply e demand. Esse particionamento reduz a latência ao processar dados localmente, mas aumenta a complexidade do sistema.
+
+### 5. Observabilidade vs. Performance
+- O uso de ELK Stack (Elasticsearch, Logstash, Kibana) para análise de logs oferece alta visibilidade e monitoramento, mas pode impactar a performance do sistema devido à sobrecarga de coleta e processamento de logs.
