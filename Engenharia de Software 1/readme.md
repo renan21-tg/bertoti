@@ -45,6 +45,7 @@ O texto aborda uma distinção importante entre programação e engenharia de so
 
 - **Exemplo:**  Durante o desenvolvimento de uma aplicação móvel, acelerar o lançamento para atender a uma janela de oportunidade no mercado pode significar sacrificar parte das medidas de segurança, como revisões detalhadas de código e testes de penetração, o que pode resultar em uma aplicação menos segura.
 
+# Aula 4
 
 ## Análise das trade-offs na arquitetura do Uber
 ![Uber-System-Design-High-Level-Architecture](https://github.com/user-attachments/assets/72989376-50a8-4175-903f-3e5553c88646)
