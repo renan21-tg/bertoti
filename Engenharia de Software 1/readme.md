@@ -69,10 +69,83 @@ O texto aborda uma distinção importante entre programação e engenharia de so
 
 ## Diagrama de classes UML
 
+![WhatsApp Image 2024-09-05 at 17 58 59](https://github.com/user-attachments/assets/13c79fe1-f49f-403e-91a1-506f58bcc871)
 
+### Classe Livro
 
+```java
+public class Livro {
+    private String titulo;
+    private String autor;
+    private int anoPublicacao;
 
+    // Construtor
+    public Livro(String titulo, String autor, int anoPublicacao) {
+        this.titulo = titulo;
+        this.autor = autor;
+        this.anoPublicacao = anoPublicacao;
+    }
 
+    // Métodos getters e setters
+    public String getTitulo() {
+        return titulo;
+    }
+
+    public void setTitulo(String titulo) {
+        this.titulo = titulo;
+    }
+
+    public String getAutor() {
+        return autor;
+    }
+
+    public void setAutor(String autor) {
+        this.autor = autor;
+    }
+
+    public int getAnoPublicacao() {
+        return anoPublicacao;
+    }
+
+    public void setAnoPublicacao(int anoPublicacao) {
+        this.anoPublicacao = anoPublicacao;
+    }
+}
+```
+
+### Classe Biblioteca
+
+```Java
+public class Biblioteca {
+    private List<Livro> livros;
+
+    // Construtor
+    public Biblioteca() {
+        this.livros = new ArrayList<>();
+    }
+
+    // Método para adicionar um livro
+    public void adicionarLivro(Livro livro) {
+        livros.add(livro);
+    }
+
+    // Método para buscar livros por título
+    public List<Livro> buscarLivroPorTitulo(String titulo) {
+        List<Livro> resultados = new ArrayList<>();
+        for (Livro livro : livros) {
+            if (livro.getTitulo().equalsIgnoreCase(titulo)) {
+                resultados.add(livro);
+            }
+        }
+        return resultados;
+    }
+
+    // Método para remover um livro
+    public void removerLivro(Livro livro) {
+        livros.remove(livro);
+    }
+}
+```
 
 
 
