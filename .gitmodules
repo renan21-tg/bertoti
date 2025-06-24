@@ -1,0 +1,3 @@
+[submodule "IHC/projetos/ScrumBot"]
+	path = IHC/projetos/ScrumBot
+	url = https://github.com/renan21-tg/ScrumBot
