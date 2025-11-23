@@ -1,93 +1,61 @@
-<img width="733" height="460" alt="image" src="https://github.com/user-attachments/assets/3ae389a7-0266-4919-a9b8-143b10392312" />
+<img width="278" height="350" alt="image" src="https://github.com/user-attachments/assets/ec671775-1434-44a0-9277-fcb72a925f33" />
 
-<br>
+<br><br>
 
-      class GerenciadorDeLeiloes {
-          private List<Produto> produtos = new ArrayList<>();
-          private List<Licitante> licitantes = new ArrayList<>();
+***User.java***
+
+      public class User {
+          private String name;
+          private String lastPost;
       
-          public void adicionarProduto(Produto produto) {
-              produtos.add(produto);
+          public User(String name) {
+              this.name = name;
           }
       
-          public void adicionarLicitante(Licitante licitante) {
-              licitantes.add(licitante);
+          public void post(String message) {
+              this.lastPost = message;
+              System.out.println(name + " publicou: " + message);
           }
       
-          public void darLance(Produto produto, Licitante licitante, double valor) {
-              // Lógica de validação do lance
-              if (valor > produto.getLanceAtual()) {
-                  produto.setLanceAtual(valor);
-                  // Notifica todos os licitantes sobre o lance em um produto específico
-                  notificarTodos("Novo lance de R$ " + valor + " para o produto " + produto.getNome() + " por " + licitante.getNome());
-              }
+          public String getLastPost() {
+              return lastPost;
           }
       
-          private void notificarTodos(String mensagem) {
-              for (Licitante licitante : licitantes) {
-                  licitante.receberNotificacao(mensagem);
-              }
-          }
-          
-          // ... muitos outros métodos que controlam tudo sobre leilões
-      }
-      
-      class Produto {
-          private String nome;
-          private double lanceAtual;
-      
-          public Produto(String nome, double lanceAtual) {
-              this.nome = nome;
-              this.lanceAtual = lanceAtual;
-          }
-      
-          public String getNome() {
-              return nome;
-          }
-      
-          public double getLanceAtual() {
-              return lanceAtual;
-          }
-      
-          public void setLanceAtual(double lanceAtual) {
-              this.lanceAtual = lanceAtual;
-          }
-      }
-      
-      class Licitante {
-          private String nome;
-      
-          public Licitante(String nome) {
-              this.nome = nome;
-          }
-      
-          public String getNome() {
-              return nome;
-          }
-      
-          public void receberNotificacao(String mensagem) {
-              System.out.println(nome + ", você recebeu uma notificação: " + mensagem);
+          public String getName() {
+              return name;
           }
       }
 
-  <br>
+<br><br>
 
-    public class LeilaoCentralizado {
-      public static void main(String[] args) {
-          GerenciadorDeLeiloes gerenciador = new GerenciadorDeLeiloes();
-  
-          Produto produto1 = new Produto("Notebook Gamer", 2500.00);
-          Produto produto2 = new Produto("Smartphone", 1500.00);
-  
-          Licitante licitante1 = new Licitante("João");
-          Licitante licitante2 = new Licitante("Maria");
-  
-          gerenciador.adicionarProduto(produto1);
-          gerenciador.adicionarProduto(produto2);
-          gerenciador.adicionarLicitante(licitante1);
-          gerenciador.adicionarLicitante(licitante2);
-  
-          gerenciador.darLance(produto1, licitante1, 2600.00);
-          gerenciador.darLance(produto2, licitante2, 1600.00);
+***Follower.java***
+
+      public class Follower {
+          private String name;
+          private User userFollowed;
+      
+          public Follower(String name, User userFollowed) {
+              this.name = name;
+              this.userFollowed = userFollowed;
+          }
+      
+          // precisa consultar manualmente — nada é automático
+          public void checkUpdates() {
+              System.out.println(name + " verificando postagens de " + userFollowed.getName());
+              System.out.println("Última postagem: " + userFollowed.getLastPost());
+          }
       }
-    }
+
+<br><br>
+
+***Main.java***
+
+      public class Main {
+          public static void main(String[] args) {
+              User user = new User("Alice");
+              Follower follower = new Follower("Bob", user);
+      
+              user.post("Olá, mundo!");
+              follower.checkUpdates();  // precisa consultar manualmente
+          }
+      }
