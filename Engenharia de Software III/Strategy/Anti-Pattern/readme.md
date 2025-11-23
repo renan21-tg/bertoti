@@ -1,54 +1,91 @@
-<img width="403" height="322" alt="image" src="https://github.com/user-attachments/assets/723e447e-7a6c-476a-9cb1-c2d74e160608" />
+<img width="741" height="382" alt="image" src="https://github.com/user-attachments/assets/8debe5ab-d5ac-46ba-9512-779fa77c53cc" />
 
-<br>
+<br><br>
 
-    public enum TipoFrete {
-        SEDEX,
-        PAC
+***PaymentProcessor.java***
+
+    public abstract class PaymentProcessor {
+    protected String payer;
+
+    public PaymentProcessor(String payer) {
+        this.payer = payer;
     }
 
-    // Classe com o Anti-Padrão
-    public class Pedido {
-        private double pesoTotal;
+    public abstract String process(double amount);
+    }
+
+<br><br>
+
+***CreditCardProcessor.java***
+
+    public class CreditCardProcessor extends PaymentProcessor {
     
-        public Pedido(double pesoTotal) {
-            this.pesoTotal = pesoTotal;
+        public CreditCardProcessor(String payer) {
+            super(payer);
         }
     
-        // Método que concentra toda a lógica e viola o Princípio Aberto/Fechado
-        public double calcularFrete(TipoFrete tipo) {
-            double custoFrete = 0.0;
+        @Override
+        public String process(double amount) {
+            return "Pagamento com cartão de crédito de R$" + amount + " realizado por " + payer;
+        }
+    }
+
+<br><br>
+
+***PaypalProcessor.java***
+
+    public class PaypalProcessor extends PaymentProcessor {
     
-            switch (tipo) {
-                case SEDEX:
-                    // Lógica de cálculo para Sedex
-                    custoFrete = 10.0 + (this.pesoTotal * 1.5);
-                    break;
-                case PAC:
-                    // Lógica de cálculo para PAC
-                    custoFrete = 5.0 + (this.pesoTotal * 1.1);
-                    break;
-                // Para adicionar um novo tipo (Ex: TRANSPORTADORA),
-                // seria necessário adicionar um novo "case" aqui,
-                // modificando a classe Pedido.
-                default:
-                    throw new IllegalArgumentException("Tipo de frete desconhecido.");
+        public PaypalProcessor(String payer) {
+            super(payer);
+        }
+    
+        @Override
+        public String process(double amount) {
+            return "Pagamento via PayPal de R$" + amount + " realizado por " + payer;
+        }
+    }
+
+<br><br>
+
+***BankTransferProcessor.java***
+
+    public class BankTransferProcessor extends PaymentProcessor {
+    
+        public BankTransferProcessor(String payer) {
+            super(payer);
+        }
+    
+        @Override
+        public String process(double amount) {
+            return "Transferência bancária de R$" + amount + " iniciada por " + payer;
+        }
+    }
+
+<br><br>
+
+***PaymentController.java***
+
+    public class PaymentController {
+    
+        public String checkout(String method, String payer, double amount) {
+            PaymentProcessor processor;
+            if ("credit".equalsIgnoreCase(method)) {
+                processor = new CreditCardProcessor(payer);
+            } else if ("paypal".equalsIgnoreCase(method)) {
+                processor = new PaypalProcessor(payer);
+            } else if ("bank".equalsIgnoreCase(method)) {
+                processor = new BankTransferProcessor(payer);
+            } else {
+                throw new IllegalArgumentException("Método de pagamento não suportado: " + method);
             }
-
-<br>
-
-    public class Loja {
+    
+            return processor.process(amount);
+        }
+    
         public static void main(String[] args) {
-            Pedido pedido = new Pedido(5.5);
-    
-            // O cliente passa o tipo de frete como um parâmetro
-            double custoSedex = pedido.calcularFrete(TipoFrete.SEDEX);
-            System.out.println("Custo do frete com Sedex: R$ " + custoSedex);
-    
-            double custoPac = pedido.calcularFrete(TipoFrete.PAC);
-            System.out.println("Custo do frete com PAC: R$ " + custoPac);
+            PaymentController controller = new PaymentController();
+            System.out.println(controller.checkout("credit", "João", 150.0));
+            System.out.println(controller.checkout("paypal", "Maria", 42.5));
         }
     }
-        return custoFrete;
-    }
-}
