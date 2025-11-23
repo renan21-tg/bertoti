@@ -1,91 +1,99 @@
-<img width="477" height="763" alt="image" src="https://github.com/user-attachments/assets/7c472de2-01c4-4906-9f76-3976c2d66129" />
+<img width="374" height="618" alt="image" src="https://github.com/user-attachments/assets/a3ebd1e1-8bdd-4548-804d-feab39bb783e" />
+
 <br><br>
 
-    // Observer
-    interface Licitante {
-        void atualizar(String nomeProduto, double novoLance);
+***Observer.java***
+
+    public interface Observer {
+        void update(String userName, String message);
     }
 
-<br>
+<br><br>
 
-    // Subject
-    interface ProdutoLeilao {
-        void registrarLicitante(Licitante licitante);
-        void removerLicitante(Licitante licitante);
-        void notificarLicitantes();
+***Subject.java***
+
+    public interface Subject {
+        void attach(Observer observer);
+        void detach(Observer observer);
+        void notifyObservers(String message);
     }
 
-<br>
+<br><br>
+
+***User.java***
 
     import java.util.ArrayList;
     import java.util.List;
     
-    // ConcreteSubject
-    class Produto implements ProdutoLeilao {
-        private String nome;
-        private double lanceAtual;
-        private List<Licitante> licitantes = new ArrayList<>();
-
-    public Produto(String nome, double lanceInicial) {
-        this.nome = nome;
-        this.lanceAtual = lanceInicial;
-    }
-
-    public void novoLance(double valor) {
-        this.lanceAtual = valor;
-        notificarLicitantes();
-    }
-
-    @Override
-    public void registrarLicitante(Licitante licitante) {
-        licitantes.add(licitante);
-    }
-
-    @Override
-    public void removerLicitante(Licitante licitante) {
-        licitantes.remove(licitante);
-    }
-
-    @Override
-    public void notificarLicitantes() {
-        for (Licitante licitante : licitantes) {
-            licitante.atualizar(nome, lanceAtual);
+    public class User implements Subject {
+    
+        private String name;
+        private List<Observer> followers = new ArrayList<>();
+    
+        public User(String name) {
+            this.name = name;
         }
-      }
+    
+        @Override
+        public void attach(Observer observer) {
+            followers.add(observer);
+        }
+    
+        @Override
+        public void detach(Observer observer) {
+            followers.remove(observer);
+        }
+    
+        @Override
+        public void notifyObservers(String message) {
+            for (Observer follower : followers) {
+                follower.update(name, message);
+            }
+        }
+    
+        public void post(String message) {
+            System.out.println(name + " publicou: " + message);
+            notifyObservers(message);
+        }
+    
+        public String getName() {
+            return name;
+        }
     }
 
-<br>
+<br><br>
 
-    // ConcreteObserver
-    class LicitanteConcreto implements Licitante {
-    private String nome;
+***Follower.java***
 
-    public LicitanteConcreto(String nome) {
-        this.nome = nome;
+    public class Follower implements Observer {
+    
+        private String name;
+    
+        public Follower(String name) {
+            this.name = name;
+        }
+    
+        @Override
+        public void update(String userName, String message) {
+            System.out.println(name + " recebeu notificação:");
+            System.out.println(" - " + userName + " publicou: " + message);
+        }
     }
 
-    @Override
-    public void atualizar(String nomeProduto, double novoLance) {
-        System.out.println(nome + ", o produto " + nomeProduto + " recebeu um novo lance de R$ " + novoLance);
-      }
-    }
+<br><br>
 
-<br>
+***Main.java***
 
-    public class Leilao {
+    public class Main {
         public static void main(String[] args) {
-            Produto produto = new Produto("Notebook Gamer", 2500.00);
+            User user = new User("Alice");
     
-            Licitante licitante1 = new LicitanteConcreto("João");
-            Licitante licitante2 = new LicitanteConcreto("Maria");
+            Follower bob = new Follower("Bob");
+            Follower charlie = new Follower("Charlie");
     
-            produto.registrarLicitante(licitante1);
-            produto.registrarLicitante(licitante2);
+            user.attach(bob);
+            user.attach(charlie);
     
-            produto.novoLance(2600.00);
-    
-            produto.removerLicitante(licitante1);
-    
-            produto.novoLance(2700.00);
+            user.post("Olá, seguidores!");
         }
     }
